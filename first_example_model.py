@@ -74,11 +74,25 @@ print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae))
 ## we can improve this by makign he traing set bigger
 ## include all the training data and test against the test data
 
+rf_full_model = RandomForestRegressor(random_state=1)
+
+# fit rf_model_on_full_data on all data from the training data
+rf_full_model.fit(X, y)
+
+#%%
+
+## how has this imporved things?
+
+## create a set of the est data with the features
+test_X = test_data[features]
+
+#%%
+
+test_data.columns
 
 
+#%%
 
-
-
-
-
-
+## now make predictions
+test_preds = rf_full_model.predict(test_X)
+test_preds
