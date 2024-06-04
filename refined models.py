@@ -47,7 +47,7 @@ test_data.describe()
 # call this y
 
 y = home_data.SalePrice
-
+y
 #%%
 
 ## choosing features from analysis done in R
@@ -58,29 +58,88 @@ features_R = ["LotFrontage", "OverallQual", "YearRemodAdd", "MasVnrArea", "GrLiv
 # call this X
 X = home_data[features_R]
 
+#%%
 
+## check for null values
+X.isnull().sum()
+## the vast majority are in the Lot frontage - 259 NAns
+# makes sense if there is no front lot
+# although also 8 in MasVnr area
+
+#%%
+
+## two things to do: exclude the NAns 
+## or chnage them to zero
+## try both and see what works better - presumably more data is good?
+
+#%%
+
+## chnage Nans to 0
+
+# create new dataframe name to avoid confusion
+## and replace the Nans with 0
+X_rep0 = X.fillna(0)
+
+## now we build the model
 #%%
 
 ## now one way to do this is to split the home_data into a traing and test set
 ## not really needed here but done for properity at this time
-train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=1)
+train_X_rep0, val_X_rep0, train_y, val_y = train_test_split(X_rep0, y, random_state=1)
 
 #%%
 
 ## now build a random forest model using these four sets 
-rf_model_R = RandomForestRegressor(random_state=1)
-rf_model_R.fit(train_X, train_y)
-rf_val_pred_R = rf_model_R.predict(val_X)
-rf_val_mae_R = mean_absolute_error(rf_val_pred_R, val_y)
+rf_model_R_rep0 = RandomForestRegressor(random_state=1)
+rf_model_R_rep0.fit(train_X_rep0, train_y)
+rf_val_pred_R_rep0 = rf_model_R_rep0.predict(val_X_rep0)
+rf_val_mae_R_rep0 = mean_absolute_error(rf_val_pred_R_rep0, val_y)
 
 ## error with NAn values
 ## so do we just remove them or haow can be get rnadom forest to deal with them?
-
 #%%
 
 ## ok so now we find what the erros in the orediction actually are
-print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R))
+print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R_rep0))
 
+## ok so it is marginally better
+# $20,257
+
+#%%
+
+# remove all Nans
+# create new dataframe name to avoid confusion
+## while dropping all nans
+X_filt = X.dropna(axis="rows")
+
+X_filt.shape[0]
+## 1195 rows 
+## now we build the model
+#%%
+
+## now one way to do this is to split the home_data into a traing and test set
+## not really needed here but done for properity at this time
+## als need to define y here
+
+train_X_filt, val_X_filt, train_y, val_y = train_test_split(X_filt, y, random_state=1)
+
+#%%
+
+## now build a random forest model using these four sets 
+rf_model_R_rep0 = RandomForestRegressor(random_state=1)
+rf_model_R_rep0.fit(train_X_rep0, train_y)
+rf_val_pred_R_rep0 = rf_model_R_rep0.predict(val_X_rep0)
+rf_val_mae_R_rep0 = mean_absolute_error(rf_val_pred_R_rep0, val_y)
+
+## error with NAn values
+## so do we just remove them or haow can be get rnadom forest to deal with them?
+#%%
+
+## ok so now we find what the erros in the orediction actually are
+print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R_rep0))
+
+## ok so it is marginally better
+# $20,257
 
 
 
