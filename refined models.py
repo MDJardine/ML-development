@@ -106,40 +106,54 @@ print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R_rep0)
 # $20,257
 
 #%%
-
+#############################################################################################
+############################################################################################
 # remove all Nans
 # create new dataframe name to avoid confusion
 ## while dropping all nans
-X_filt = X.dropna(axis="rows")
+
+## doing this will also require a new y as there will be fewer rows of data - issue downstream
+
+## first select data frame with the features plus y
+features_R_filtNA = ["LotFrontage", "OverallQual", "YearRemodAdd", "MasVnrArea", "GrLivArea", "FullBath", "TotRmsAbvGrd", 
+            "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF",  "SalePrice"]
+X_NA = home_data[features_R_filtNA]
+
+## drop the NAs
+X_filt = X_NA.dropna(axis="rows")
 
 X_filt.shape[0]
 ## 1195 rows 
 ## now we build the model
 #%%
+##define new y
+y_filt = X_filt.SalePrice
 
+#%%
+# and correspondingly drop the variable from the X variable set
+X_filt_drop = X_filt.drop(['SalePrice'], axis=1)
+
+
+#%%
 ## now one way to do this is to split the home_data into a traing and test set
 ## not really needed here but done for properity at this time
-## als need to define y here
 
-train_X_filt, val_X_filt, train_y, val_y = train_test_split(X_filt, y, random_state=1)
+train_X_filt, val_X_filt, train_y_filt, val_y_filt = train_test_split(X_filt_drop, y_filt, random_state=1)
 
 #%%
 
 ## now build a random forest model using these four sets 
-rf_model_R_rep0 = RandomForestRegressor(random_state=1)
-rf_model_R_rep0.fit(train_X_rep0, train_y)
-rf_val_pred_R_rep0 = rf_model_R_rep0.predict(val_X_rep0)
-rf_val_mae_R_rep0 = mean_absolute_error(rf_val_pred_R_rep0, val_y)
+rf_model_R_filt = RandomForestRegressor(random_state=1)
+rf_model_R_filt.fit(train_X_filt, train_y_filt)
+rf_val_pred_R_filt = rf_model_R_rep0.predict(val_X_filt)
+rf_val_mae_R_filt = mean_absolute_error(rf_val_pred_R_filt, val_y_filt)
 
 ## error with NAn values
 ## so do we just remove them or haow can be get rnadom forest to deal with them?
 #%%
 
 ## ok so now we find what the erros in the orediction actually are
-print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R_rep0))
+print("Validation MAE for Random Forest Model {:,.0f}".format(rf_val_mae_R_filt))
 
-## ok so it is marginally better
-# $20,257
-
-
-
+## ok so it is much better
+# $11,713
