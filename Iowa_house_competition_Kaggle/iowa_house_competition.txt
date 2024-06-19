@@ -1,0 +1,5 @@
+Here I'm trying to improve the model produced as part of Kaglles Machine leanring course. 
+
+I though this would ba good way to learn more Python and ML since these are important skills.
+
+Since a lot of tis is new to me its slow going but will hopefully go up the leader broard and be able to take part in more competitions and build other models soon. 
