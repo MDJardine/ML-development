@@ -26,10 +26,10 @@ from sklearn.model_selection import train_test_split
 ## two sets:  trainign and test data
 
 # training data
-home_data = pd.read_csv('C:/Users/user/Documents/GitHub/ML-development/train.csv')
+home_data = pd.read_csv('C:/Users/user/Documents/GitHub/ML-development/Iowa_house_competition_Kaggle/train.csv')
 
 # and the test data 
-test_data = pd.read_csv('C:/Users/user/Documents\\GitHub\\ML-development\\test.csv')
+test_data = pd.read_csv('C:/Users/user/Documents/GitHub/ML-development/Iowa_house_competition_Kaggle\\test.csv')
 
 #%%
 
