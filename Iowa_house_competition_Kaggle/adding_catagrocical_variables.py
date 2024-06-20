@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Thu Jun 20 21:25:23 2024
+
+@author: user
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Wed Jun 19 09:12:29 2024
 
 @author: user
@@ -13,6 +20,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
+import category_encoders as ce
 
 #%%
 
@@ -40,9 +48,55 @@ home_data.describe()
 #%%
 
 ## choosing features from analysis done in R
-features2 = ["OverallQual", "YearRemodAdd", "MasVnrArea", "GrLivArea", "FullBath", "TotRmsAbvGrd", 
+## all of these were p<0.001 when building a simple linear model of that variable describign sale price
+## not a perfect way to do it but its a start
+
+## producing continous variables is simple
+features_cont = ["LotFrontage", "OverallQual", "YearRemodAdd", "MasVnrArea", "GrLivArea", "FullBath", "TotRmsAbvGrd", 
             "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "SalePrice"]
 
+#%%
+
+
+## however there are some probelms later when including what seem to be important catagorical variables
+# read thee in
+cat_vars = pd.read_csv("C:/Users/user/Documents\\GitHub\\ML-development\\Iowa_house_competition_Kaggle\\important_characters.csv")
+cat_vars
+
+#%%
+## now create a features list for these 
+features_cat = list(cat_vars.imp_values_chr)
+
+#%%
+
+## so we have 19 variables which from the analyis in R (will try to repeat in Python at some point) that I have reason to belive are important 
+## how do we deal with these?
+
+#%%
+
+## create a version of training dat with these variables
+X_chr = home_data[features_cat] 
+X_chr.describe()
+#%%
+X_chr.shape
+# 1460 rows of 9 variables
+
+#%% any NANs?
+X_chr.isnull().sum()
+## yeah quite a few 
+## 'alley' has 1369/1460 with NAN
+
+#%%
+## for now I'll remove all those columns that have NANs and fouc only on the four that are complete
+X_chr = X_chr.dropna(axis="columns")
+X_chr.describe()
+## so now we have four columns
+# with between four and five levels of each of these character variables
+#%%
+
+
+
+#%%
 ## now select the columsn from the training data that fit those features
 # call this X
 X2 = home_data[features2]
@@ -82,7 +136,7 @@ train_X2, val_X2, train_y2, val_y2 = train_test_split(X2_E, y2, random_state=1)
 #%%
 
 ## now build a random forest model using these four sets 
-rf_model_E = RandomForestRegressor(random_state=1)
+rf_model_E = RandomForestRegressor(random_state=5)
 
 ## fit model to data
 rf_model_E.fit(train_X2, train_y2)
