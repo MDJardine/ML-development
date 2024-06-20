@@ -5,10 +5,6 @@ Created on Wed Jun 19 09:12:29 2024
 @author: user
 """
 
-## previously I've had some probelms with lot frontage which I thought was a good feature to include 
-## however replacign it with zeros or remoing the rows wasn't great
-## what abut just removing it?
-
 
 #%%
 
@@ -86,7 +82,7 @@ train_X2, val_X2, train_y2, val_y2 = train_test_split(X2_E, y2, random_state=1)
 #%%
 
 ## now build a random forest model using these four sets 
-rf_model_E = RandomForestRegressor(random_state=5)
+rf_model_E = RandomForestRegressor(random_state=1)
 
 ## fit model to data
 rf_model_E.fit(train_X2, train_y2)
