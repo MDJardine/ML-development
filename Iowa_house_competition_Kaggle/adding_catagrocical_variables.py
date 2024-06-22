@@ -52,7 +52,7 @@ home_data.describe()
 ## not a perfect way to do it but its a start
 
 ## producing continous variables is simple
-features_cont = ["LotFrontage", "OverallQual", "YearRemodAdd", "MasVnrArea", "GrLivArea", "FullBath", "TotRmsAbvGrd", 
+c = ["LotFrontage", "OverallQual", "YearRemodAdd", "MasVnrArea", "GrLivArea", "FullBath", "TotRmsAbvGrd", 
             "Fireplaces", "GarageCars", "GarageArea", "WoodDeckSF", "SalePrice"]
 
 #%%
@@ -94,12 +94,32 @@ X_chr.describe()
 # with between four and five levels of each of these character variables
 #%%
 
+## need to perform some sort of encoding to make this work
+## one hot encoding seems popular?
+# since this leads to an extra column for each level of the variable then lets just do one at a time?
+
+one_hot = ce.OneHotEncoder(cols=col_names[:-1])
+
+
+
+X_train_oh = X_train.copy()
+
+X_test_oh = X_test.copy()
+
+X_train_oh = one_hot.fit_transform(X_train_oh)
+
+X_test_oh = one_hot.transform(X_test_oh)
+
+X_train_oh.head()
+
+
+
 
 
 #%%
 ## now select the columsn from the training data that fit those features
 # call this X
-X2 = home_data[features2]
+X2 = home_data[]
 
 ## have a look to check this
 X2.describe()
