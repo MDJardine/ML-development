@@ -100,8 +100,9 @@ X_chr.describe()
 
 one_hot = ce.OneHotEncoder(cols=col_names[:-1])
 
+#%%
 
-
+## make copices of the data
 X_train_oh = X_train.copy()
 
 X_test_oh = X_test.copy()
