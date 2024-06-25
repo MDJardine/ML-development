@@ -102,6 +102,8 @@ one_hot = ce.OneHotEncoder(cols=col_names[:-1])
 
 #%%
 
+## seperate into training sets?
+
 ## make copices of the data
 X_train_oh = X_train.copy()
 
