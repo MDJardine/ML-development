@@ -98,6 +98,27 @@ X_chr.describe()
 ## one hot encoding seems popular?
 # since this leads to an extra column for each level of the variable then lets just do one at a time?
 
+# lets just use MSZoning
+print(X_chr['MSZoning'].unique())
+ 
+#%%
+# how mnay of each of hese are there?
+X_chr['MSZoning'].value_counts()
+
+## most of them are RL
+# very few are C (all)
+# I should look up what all of these are
+
+#%%
+one_hot_encoded_zoning = pd.get_dummies(X_chr, columns = ['MSZoning'])
+print(one_hot_encoded_zoning)
+
+
+#%%
+
+
+
+
 one_hot = ce.OneHotEncoder(cols=col_names[:-1])
 
 #%%
