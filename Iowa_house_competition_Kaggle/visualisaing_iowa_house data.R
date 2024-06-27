@@ -13,18 +13,13 @@ dir.create(tempdir())
 
 ### read in the data 
 
-train_data <- read.csv("C:/Users/user/Documents/Python Scripts/train.csv")
+train_data <- read.csv("C:/Users/user/Documents/GitHub/ML-development/Iowa_house_competition_Kaggle/train.csv")
 head(train_data)
 ### check data
 summary(train_data)
 str(train_data)
 ## which ones are continuous variables?
 ## c[1,2,4,5]
-
-
-## lets just take those first four columns
-FFour <- train_data[,c(1,2,4,5)]
-
 
 ## find all numeric ones
 just_num <- train_data %>% dplyr::select(where(is.numeric))
@@ -71,6 +66,9 @@ for(i in 1:ncol(not_num[-1])){
 }
 imp_chr <- cbind.data.frame(imp_values_chr, p_values_chr)
 imp_chr
+
+# save this to use in python script
+write.csv(imp_chr, "C:/Users/user/Documents/GitHub/ML-development/Iowa_house_competition_Kaggle/important_characters.csv", row.names = F)
 ## so nine factors have a low p-value and and R2 of >0.1
 ## so we'll use these 9
 
@@ -89,7 +87,7 @@ res2 <- rcorr(as.matrix(var_of_interest_NA))
 
 
 #####
-# Insignificant correlations are leaved blank
+# Insignificant correlations are left blank
 corrplot(res2$r, type="upper", order="hclust", 
          p.mat = res2$P, sig.level = 0.05, insig = "blank")
 ## some error here  -not sure what its affecting - still creates plot
